@@ -1,12 +1,17 @@
-import React, { Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import Navbar from './Navbar';
-import MessagesList from './MessagesList';
+import React, { Component } from 'react'
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
+import Sidebar from './Sidebar'
+import Navbar from './Navbar'
+import MessagesList from './MessagesList'
+import { connect } from 'react-redux'
+import { fetchMessages } from '../store'
 
-export default class Main extends Component {
+export class Main extends Component {
+  componentDidMount() {
+    this.props.loadMessages()
+  }
 
-  render () {
+  render() {
     return (
       <div>
         <Sidebar />
@@ -18,6 +23,17 @@ export default class Main extends Component {
           </Switch>
         </main>
       </div>
-    );
+    )
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  loadMessages: () => dispatch(fetchMessages())
+})
+
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps
+  )(Main)
+)
